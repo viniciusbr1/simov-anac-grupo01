@@ -1,0 +1,55 @@
+### Extensao REST Client do VS Code; servidor em localhost:8080
+### Listar com paginacao
+GET http://localhost:8080/api/voos?page=0&size=20
+
+### Buscar ID existente, alterar o ID conforme o banco
+GET http://localhost:8080/api/voos/1
+
+### Comprovar retorno 404
+GET http://localhost:8080/api/voos/999999999
+
+### Cadastrar voo
+POST http://localhost:8080/api/voos
+Content-Type: application/json
+
+{
+  "empresaAerea": "AZU",
+  "numeroVoo": "9999",
+  "codigoDi": "0",
+  "codigoTipoLinha": "N",
+  "aeroportoOrigem": "SBGR",
+  "aeroportoDestino": "SBRJ",
+  "partidaPrevista": "2026-09-10T18:00:00",
+  "partidaReal": null,
+  "chegadaPrevista": "2026-09-10T19:00:00",
+  "chegadaReal": null,
+  "situacaoVoo": "CANCELADO"
+}
+
+### Atualizar um voo (ajuste o ID)
+PUT http://localhost:8080/api/voos/1
+Content-Type: application/json
+
+{
+  "empresaAerea": "AZU",
+  "numeroVoo": "9999",
+  "codigoDi": "0",
+  "codigoTipoLinha": "N",
+  "aeroportoOrigem": "SBGR",
+  "aeroportoDestino": "SBRJ",
+  "partidaPrevista": "2026-09-10T18:30:00",
+  "partidaReal": null,
+  "situacaoVoo": "CANCELADO"
+}
+
+### Dois ou mais filtros de dominio
+GET http://localhost:8080/api/voos/filtro?empresa=AZU&origem=SBGR
+
+### Estatisticas para grafico
+GET http://localhost:8080/api/voos/estatisticas
+
+### Excluir um voo (ajuste o ID)
+DELETE http://localhost:8080/api/voos/1
+
+### Importacao: em Insomnia usar Multipart Form e campo arquivo, tipo File
+POST http://localhost:8080/api/voos/importar

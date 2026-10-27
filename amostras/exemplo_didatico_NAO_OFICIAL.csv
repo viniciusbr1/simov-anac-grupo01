@@ -1,0 +1,4 @@
+Sigla ICAO Empresa Aérea;Número Voo;Código DI;Código Tipo Linha;Sigla ICAO Aeroporto Origem;Sigla ICAO Aeroporto Destino;Partida Prevista;Partida Real;Chegada Prevista;Chegada Real;Situação Voo
+AZU;1234;0;N;SBGR;SBRJ;10/09/2026 08:00;10/09/2026 08:13;10/09/2026 09:00;10/09/2026 09:05;REALIZADO
+GLO;4567;0;N;SBSP;SBBR;10/09/2026 09:20;;10/09/2026 11:10;;CANCELADO
+TAM;8901;0;N;SBRJ;SBGR;11/09/2026 15:30;11/09/2026 15:39;11/09/2026 16:45;11/09/2026 17:00;REALIZADO

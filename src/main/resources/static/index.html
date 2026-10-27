@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+ <meta charset="utf-8" />
+ <meta name="viewport" content="width=device-width, initial-scale=1" />
+ <title>SIMOV ANAC | Monitoramento de voos</title>
+ <link rel="stylesheet" href="/css/style.css" />
+ <script src="/js/app.js" defer></script>
+</head>
+<body>
+ <header class="topbar">
+  <div class="brand"><span class="brand-icon">✈</span><span>SIMOV<span class="accent">/ANAC</span><small>Painel de Monitoramento de Voos</small></span></div>
+  <div class="semester">FATEC · POO II · GRUPO 01 <span class="live-indicator">● SISTEMA LOCAL</span></div>
+ </header>
+ <main class="container">
+  <section class="hero">
+   <div><p class="eyebrow">PLATAFORMA DE ANÁLISE DE DADOS</p><h1>Inteligência para<br><em>operações aéreas.</em></h1>
+    <p class="hero-sub">Consulte, cadastre, importe e visualize operações de voo a partir de registros oficiais VRA da ANAC.</p>
+    <a href="https://siros.anac.gov.br/siros/registros/diversos/vra/2026/" target="_blank" rel="noopener" class="source-link">↗ Ver dados oficiais ANAC</a>
+   </div>
+   <div class="hero-art" aria-hidden="true"><div class="radar"></div><span class="airplane">✈</span></div>
+  </section>
+
+  <section class="metrics" aria-label="Indicadores gerais">
+   <article class="metric"><div class="metric-top">REGISTROS ARMAZENADOS <span>◈</span></div><strong id="metric-total">—</strong><small>Operações cadastradas</small></article>
+   <article class="metric"><div class="metric-top">VOOS REALIZADOS <span>↗</span></div><strong id="metric-realizados">—</strong><small>Registros com situação REALIZADO</small></article>
+   <article class="metric"><div class="metric-top">VOOS CANCELADOS <span>⊘</span></div><strong id="metric-cancelados">—</strong><small>Registros com situação CANCELADO</small></article>
+   <article class="metric"><div class="metric-top">TAXA DE CANCELAMENTO <span>◉</span></div><strong id="metric-taxa">—</strong><small>Percentual da base carregada</small></article>
+  </section>
+
+  <section class="workspace">
+   <div class="panel data-panel">
+    <div class="panel-heading"><div><span class="eyebrow">BASE PERSISTIDA</span><h2>Registros de voo</h2></div><button id="reload" type="button" class="btn btn-secondary">↻ Atualizar</button></div>
+    <form id="filter-form" class="filters">
+      <label>EMPRESA ICAO<input id="f-empresa" maxlength="3" placeholder="Ex.: AZU" /></label>
+      <label>ORIGEM ICAO<input id="f-origem" maxlength="4" placeholder="Ex.: SBGR" /></label>
+      <label>DESTINO ICAO<input id="f-destino" maxlength="4" placeholder="Ex.: SBRJ" /></label>
+      <label>SITUAÇÃO<select id="f-situacao"><option value="">Todas</option><option value="REALIZADO">Realizado</option><option value="CANCELADO">Cancelado</option><option value="NAO INFORMADO">Não informado</option></select></label>
+      <div class="filter-actions"><button class="btn btn-primary" type="submit">Filtrar</button><button class="btn btn-light" id="clear-filters" type="button">Limpar</button></div>
+    </form>
+    <div class="quick-search"><label for="busca-id">BUSCAR POR ID</label><input id="busca-id" type="number" min="1" placeholder="Digite o ID do voo" /><button id="buscar-id" type="button" class="btn btn-secondary">Buscar ID</button></div>
+    <div class="table-wrap"><table><thead><tr><th>ID</th><th>EMPRESA</th><th>VOO</th><th>ROTA</th><th>PARTIDA PREVISTA</th><th>SITUAÇÃO</th><th>AÇÕES</th></tr></thead><tbody id="voos-tbody"><tr><td colspan="7" class="empty">Carregando dados...</td></tr></tbody></table></div>
+    <div class="pagination"><span id="page-desc">—</span><div><button type="button" id="prev-page" class="btn btn-light">← Anterior</button><button type="button" id="next-page" class="btn btn-light">Próxima →</button></div></div>
+   </div>
+
+   <aside class="sidebar">
+    <section class="panel"><div class="panel-heading"><div><span class="eyebrow">GERENCIAMENTO</span><h2 id="form-title">Cadastrar voo</h2></div></div>
+     <form id="voo-form" class="voo-form">
+      <input type="hidden" id="edit-id" />
+      <div class="duo"><label>EMPRESA ICAO *<input id="empresa" required minlength="3" maxlength="3" placeholder="AZU" /></label><label>Nº DO VOO *<input id="numero" required maxlength="10" placeholder="1234" /></label></div>
+      <div class="duo"><label>ORIGEM ICAO *<input id="origem" required minlength="4" maxlength="4" placeholder="SBGR" /></label><label>DESTINO ICAO *<input id="destino" required minlength="4" maxlength="4" placeholder="SBRJ" /></label></div>
+      <div class="duo"><label>CÓDIGO DI<input id="di" maxlength="10" placeholder="—" /></label><label>TIPO LINHA<input id="tipo" maxlength="10" placeholder="—" /></label></div>
+      <label>PARTIDA PREVISTA (OU REAL) *<input id="partida-prevista" type="datetime-local" /></label>
+      <label>PARTIDA REAL<input id="partida-real" type="datetime-local" /></label>
+      <label>CHEGADA PREVISTA<input id="chegada-prevista" type="datetime-local" /></label>
+      <label>CHEGADA REAL<input id="chegada-real" type="datetime-local" /></label>
+      <label>SITUAÇÃO *<select id="situacao" required><option value="REALIZADO">Realizado</option><option value="CANCELADO">Cancelado</option><option value="NAO INFORMADO">Não informado</option></select></label>
+      <div class="form-actions"><button id="submit-voo" type="submit" class="btn btn-primary">Salvar voo</button><button id="cancel-edit" type="button" class="btn btn-light">Limpar</button></div>
+     </form>
+    </section>
+    <section class="panel upload-panel"><span class="eyebrow">DADOS ABERTOS</span><h2>Importar arquivo</h2><p>Selecione o CSV oficial da ANAC. O backend valida, remove duplicidades e grava uma amostra representativa no Neon.</p>
+      <form id="import-form"><input type="file" id="arquivo" accept=".csv,text/csv" required /><button id="import-button" type="submit" class="btn btn-primary full">⬆ Importar CSV</button></form><div id="import-result" class="import-result" aria-live="polite"></div>
+    </section>
+    <section class="panel chart-panel"><span class="eyebrow">ANÁLISE OPERACIONAL</span><h2>Voos por situação</h2><p>Quantos voos há em cada situação na base armazenada?</p><div id="chart-bars" class="chart-bars"><span class="muted">O gráfico aparecerá após carregar os dados.</span></div></section>
+   </aside>
+  </section>
+  <footer>SIMOV ANAC · Projeto acadêmico POO II · Grupo 01 · Dados consultados na ANAC, não é um sistema oficial da Agência.</footer>
+ </main>
+ <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

@@ -1,0 +1,11 @@
+.env
+.env.*
+!.env.example
+/target/
+/.idea/
+/.vscode/
+*.class
+*.log
+*.csv
+!amostras/exemplo_didatico_NAO_OFICIAL.csv
+.DS_Store
